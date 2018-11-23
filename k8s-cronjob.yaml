@@ -1,0 +1,60 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  labels:
+    app: myapp
+    component: mongodb-backup
+  name: myapp-mongodb-backup
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    spec:
+      backoffLimit: 5
+      template:
+        spec:
+          containers:
+          - image: khoinqq/mongodb-backup-s3
+            imagePullPolicy: Always
+            name: backup
+            env:
+              - name: MONGODB_DB
+                value: primus-db
+              - name: MONGODB_HOST
+                value: mongo-mongodb
+              - name: MONGODB_PORT
+                value: "27017"
+              - name: MONGODB_USER
+                value: primus
+              - name: MONGODB_PASS
+                valueFrom:
+                  secretKeyRef:
+                    name: mongo-mongodb
+                    key: mongodb-password
+              - name: AWS_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: do-spaces
+                    key: api-key
+              - name: AWS_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: do-spaces
+                    key: secret-key
+              - name: BACKUP_FOLDER
+                value: prod-backup/mongodb/
+              - name: BUCKET
+                value: s3-bucket
+              - name: BUCKET_REGION
+                value: sgp1
+              - name: S3_ENDPOINT
+                value: https://sgp1.digitaloceanspaces.com
+              - name: DISABLE_CRON
+                value: "true"
+              - name: INIT_BACKUP
+                value: "true"
+          restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 30
+  schedule: '15 0 * * *'
+  successfulJobsHistoryLimit: 3
+  suspend: false

@@ -2,6 +2,11 @@
 
 This image runs mongodump to backup data using cronjob to an s3 compatible bucket
 
+I also include the Kubernetes cronjob manifest for those who want to run on Kubernetes cluster. Correct the ENV for your case and run below command to apply
+```
+kubectl apply -f k8s-cronjob.yaml
+```
+
 ## Forked from [deenoize/mongodb-backup-s3](https://github.com/deenoize/mongodb-backup-s3)
 Added support S3 endpoint for those who use S3 compatible object storage, eg: Digital Ocean Spaces or minio server
 
@@ -21,6 +26,7 @@ Play well with this docker [nginx-letsencrypt-mongo-portainer](https://github.co
 docker run -d \
   --env AWS_ACCESS_KEY_ID=awsaccesskeyid \
   --env AWS_SECRET_ACCESS_KEY=awssecretaccesskey \
+  --end S3_ENDPOINT=s3-endpoint \
   --env BUCKET=mybucketname
   --env MONGODB_HOST=mongodb.host \
   --env MONGODB_PORT=27017 \
@@ -35,6 +41,7 @@ If you link `deenoize/mongodb-backup-s3` to a mongodb container with an alias na
 docker run -d \
   --env AWS_ACCESS_KEY_ID=myaccesskeyid \
   --env AWS_SECRET_ACCESS_KEY=mysecretaccesskey \
+  --end S3_ENDPOINT=s3-endpoint \
   --env BUCKET=mybucketname \
   --env BACKUP_FOLDER=a/sub/folder/path/ \
   --env INIT_BACKUP=true \
@@ -48,6 +55,7 @@ If your bucket in not standard region and you get `A client error (PermanentRedi
 docker run -d \
   --env AWS_ACCESS_KEY_ID=myaccesskeyid \
   --env AWS_SECRET_ACCESS_KEY=mysecretaccesskey \
+  --end S3_ENDPOINT=s3-endpoint \
   --env BUCKET=mybucketname \
   --env BUCKET_REGION=mybucketregion \
   --env BACKUP_FOLDER=a/sub/folder/path/ \
