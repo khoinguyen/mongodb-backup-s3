@@ -1,6 +1,9 @@
 # mongodb-backup-s3
 
-This image runs mongodump to backup data using cronjob to an s3 bucket
+This image runs mongodump to backup data using cronjob to an s3 compatible bucket
+
+## Forked from [deenoize/mongodb-backup-s3](https://github.com/deenoize/mongodb-backup-s3)
+Added support S3 endpoint for those who use S3 compatible object storage, eg: Digital Ocean Spaces or minio server
 
 ## Forked from [halvves/mongodb-backup-s3](https://github.com/halvves/mongodb-backup-s3)
 
@@ -90,6 +93,8 @@ mongodbbackup:
 
 `AWS_SECRET_ACCESS_KEY`: - your aws secret access key (for your s3 bucket)
 
+`S3_ENDPOINT`: - your S3 endpoint
+
 `BUCKET`: - your s3 bucket
 
 `BUCKET_REGION`: - your s3 bucket' region (eg `us-east-2` for Ohio). Optional. Add if you get an error `A client error (PermanentRedirect)`
@@ -140,4 +145,4 @@ docker exec mongodb-backup-s3 /restore.sh
 
 ## Acknowledgements
 
-  * forked from [halvves/mongodb-backup-s3](https://github.com/halvves/mongodb-backup-s3) fork of [futurist](https://github.com/futurist)'s fork of [tutumcloud/mongodb-backup](https://github.com/tutumcloud/mongodb-backup)
+  * forked from [deenoize/mongodb-backup-s3](https://github.com/deenoize/mongodb-backup-s3) fork of [halvves/mongodb-backup-s3](https://github.com/halvves/mongodb-backup-s3) fork of [futurist](https://github.com/futurist)'s fork of [tutumcloud/mongodb-backup](https://github.com/tutumcloud/mongodb-backup)
